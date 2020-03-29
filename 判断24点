@@ -1,0 +1,53 @@
+#include<stdio.h>
+#include<string.h>
+#include<math.h>
+double a[5],flag=0;
+void find24(double tem[],int num)
+{
+    if(num==1)
+    {
+        if(fabs(tem[0]-24)<1e-6) flag=1;
+    }
+    else
+    {   double temp[5]={0};
+        for(int i=0;i<num-1;i++)
+            for(int j=i+1;j<num;j++)
+        {
+            int item=0;
+            for(int k=0;k<num;k++)
+            if(k!=i&&k!=j) temp[item++]=tem[k];
+            temp[item]=tem[i]+tem[j];
+            find24(temp,num-1);
+            temp[item]=tem[i]*tem[j];
+            find24(temp,num-1);
+            temp[item]=tem[i]-tem[j];
+            find24(temp,num-1);
+            temp[item]=tem[j]-tem[i];
+            find24(temp,num-1);
+            if(tem[i]!=0)
+            {
+                temp[item]=tem[j]/tem[i];
+                find24(temp,num-1);
+            }
+            else
+            {
+                temp[item]=tem[i]/tem[j];
+                find24(temp,num-1);
+            }
+        }
+    }
+}
+int main()
+{
+    while(scanf("%lf %lf %lf %lf",&a[0],&a[1],&a[2],&a[3])!=EOF)
+    {   flag=0;
+        if(a[0]==0&&a[1]==0&&a[2]==0&&a[3]==0) break;
+        else
+        {
+           find24(a,4);
+           if(flag) printf("YES\n");
+           else printf("NO\n");
+        }
+    }
+    return 0;
+}
