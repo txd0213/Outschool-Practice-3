@@ -1,0 +1,48 @@
+#include<iostream>
+#include<cstdio>
+#include<cstring>
+#include<string.h>
+using namespace std;
+int ini[33],temp[33],goal[33];
+char st1[33],st2[33];
+void change(int x)
+{
+    temp[x-1]=(temp[x-1]==1)?0:1;
+    temp[x+1]=(temp[x+1]==1)?0:1;
+    temp[x]=(temp[x]==1)?0:1;
+}
+int check(int x1)
+{
+    if(temp[x1]==goal[x1])
+        return 1;
+    else return 0;
+}
+int main()
+{   int cnt=1,flag,flag2,cnt2=0,len;
+    scanf("%s",st1);len=strlen(st1);
+    for(int i=0;st1[i]!='\0';i++) ini[i+1]=st1[i]-48;
+    scanf("%s",st2);
+    for(int i=0;st2[i]!='\0';i++) goal[i+1]=st2[i]-48;
+    memcpy(temp,ini,sizeof(ini));
+    change(1);
+    for(int i=1;i<len;i++)
+    {
+        if(check(i)) continue;
+        else {change(i+1);cnt++;}
+    }
+    if(check(len)) flag=1;
+    else flag=0;
+    memcpy(temp,ini,sizeof(ini));
+    for(int i=1;i<len;i++)
+    {
+        if(check(i)) continue;
+        else {change(i+1);cnt2++;}
+    }
+    if(check(len)) flag2=1;
+    else flag2=0;
+    if(flag&&flag2) printf("%d",min(cnt,cnt2));
+    else if(flag&&!flag2) printf("%d",cnt);
+    else if(!flag&&flag2) printf("%d",cnt2);
+    else printf("impossible");
+    return 0;
+}
